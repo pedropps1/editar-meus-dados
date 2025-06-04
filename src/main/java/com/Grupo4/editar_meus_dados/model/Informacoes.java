@@ -2,6 +2,9 @@ package com.Grupo4.editar_meus_dados.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "informacoes")
