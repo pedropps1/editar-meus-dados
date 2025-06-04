@@ -2,9 +2,7 @@ package com.Grupo4.editar_meus_dados.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonBackReference; // IMPORTAR
 
 @Entity
 @Table(name = "informacoes")
@@ -23,9 +21,10 @@ public class Informacoes {
     private LocalDateTime ultimoAcesso;
 
     @OneToOne(mappedBy = "informacoes")
+    @JsonBackReference
     private Usuario usuario;
 
-    // Constructors (****)
+    // Construtores
     public Informacoes() {
     }
 
@@ -36,7 +35,7 @@ public class Informacoes {
         this.ultimoAcesso = ultimoAcesso;
     }
 
-    // Getters e Setters (*****)
+    // Getters e Setters
     public Long getId() {
         return id;
     }

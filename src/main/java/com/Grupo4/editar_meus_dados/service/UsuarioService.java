@@ -28,19 +28,20 @@ public class UsuarioService {
 
     @Transactional
     public Usuario atualizarUsuario(Long id, UsuarioUpdateDto dadosAtualizados) {
-        // 1. Buscar o usuário existente
         Usuario usuario = getUsuarioById(id);
-
-        // 2. Obter ou criar a entidade Informacoes associada
         Informacoes informacoes = usuario.getInformacoes();
+
+        // Garante que a entidade Informacoes exista e esteja associada corretamente
         if (informacoes == null) {
             informacoes = new Informacoes();
-            usuario.setInformacoes(informacoes);
-            informacoes.setUsuario(usuario);
+            usuario.setInformacoes(informacoes); // Associa Informacoes ao Usuario
+            informacoes.setUsuario(usuario);     // Associa Usuario a Informacoes (importante para bidirecionalidade)
         }
 
-        // 3. Atualizar os campos editáveis
+        // Atualizar os campos editáveis
+        // Foto (em Usuario)
         if (dadosAtualizados.getFoto() != null) {
+            // Adicionar validação de tamanho e tipo aqui se necessário (RN037x) [cite: 34]
             usuario.setFoto(dadosAtualizados.getFoto());
         }
 
@@ -53,10 +54,9 @@ public class UsuarioService {
         // Telefone (em Informacoes)
         informacoes.setTelefone(dadosAtualizados.getTelefone());
 
+        // Atualiza a data do último acesso/modificação nas informações do usuário
         informacoes.setUltimoAcesso(LocalDateTime.now());
 
-        // 4. Salvar o usuário
         return usuarioRepository.save(usuario);
     }
-
 }

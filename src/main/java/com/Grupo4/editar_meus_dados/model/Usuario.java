@@ -2,8 +2,7 @@ package com.Grupo4.editar_meus_dados.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference; // IMPORTAR
 
 @Entity
 @Table(name = "usuario")
@@ -30,9 +29,10 @@ public class Usuario {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false, orphanRemoval = true)
     @JoinColumn(name = "informacoes_id", unique = true)
+    @JsonManagedReference
     private Informacoes informacoes;
 
-    // Constructors (*****)
+    // Construtores
     public Usuario() {
     }
 
@@ -43,9 +43,12 @@ public class Usuario {
         this.dataIngresso = dataIngresso;
         this.foto = foto;
         this.informacoes = informacoes;
+        if (informacoes != null) {
+            informacoes.setUsuario(this);
+        }
     }
 
-    // Getters e Setters (*****)
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -100,5 +103,8 @@ public class Usuario {
 
     public void setInformacoes(Informacoes informacoes) {
         this.informacoes = informacoes;
+        if (informacoes != null && informacoes.getUsuario() != this) { // Garante a bidirecionalidade ao setar
+            informacoes.setUsuario(this);
+        }
     }
 }
